@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css"/>
+    <style>
+
+        .block-area {
+            padding: 5px 5px 0;
+        }
+
+        .page-title {
+            padding: 5px 15px;
+        }
+
+        .tile {
+            margin-bottom: 10px;
+        }
+
+        .alert {
+            margin-top: 20px;
+            margin-bottom: 0px;
+            font-size: 16px;
+        }
+
+        .page-title {
+            font-size: 18px;
+            border-bottom: 1px solid #fff;
+            font-weight: bold
+        }
+
+        .p-relative {
+
+        }
+
+        .media, .media .media {
+            margin-top: 0 !important
+        }
+
+        .m-b-15 {
+            margin-bottom: 0 !important
+        }
+
+        .ztree li a {
+            color: #fff !important
+        }
+
+        .ztree li a:hover {
+            color: #fff !important
+        }
+
+        .ztree li a.curSelectedNode {
+            background: none !important
+        }
+
+        #example_previous {
+            cursor: pointer;
+            margin: 0 3px;
+            background: rgba(0, 0, 0, 0) none repeat scroll 0 0 !important;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.31) !important;
+            padding: 6px 12px
+        }
+
+        input[type="checkbox"], input[type="radio"] {
+            opacity: 1;
+        }
+
+        #example_previous:hover {
+            background: rgba(255, 255, 255, 0.39) !important;
+            color: #000;
+        }
+
+        #example_first {
+            cursor: pointer;
+            margin: 0 3px;
+            background: rgba(0, 0, 0, 0) none repeat scroll 0 0 !important;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.31) !important;
+            padding: 6px 12px
+        }
+
+        #example_first:hover {
+            background: rgba(255, 255, 255, 0.39) !important;
+            color: #000;
+        }
+
+        #example_next {
+            cursor: pointer;
+            margin: 0 3px;
+            background: rgba(0, 0, 0, 0) none repeat scroll 0 0 !important;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.31) !important;
+            padding: 6px 12px
+        }
+
+        #example_next:hover {
+            background: rgba(255, 255, 255, 0.39) !important;
+            color: #000;
+        }
+
+        #example_last {
+            cursor: pointer;
+            margin: 0 3px;
+            background: rgba(0, 0, 0, 0) none repeat scroll 0 0 !important;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.31) !important;
+            padding: 6px 12px
+        }
+
+        #example_last:hover {
+            background: rgba(0, 0, 0, 0) none repeat scroll 0 0 !important;
+            color: #fff;
+        }
+
+        .current {
+            background: rgba(255, 255, 255, 0.39) !important;
+            color: #000;
+        }
+
+        .paginate_button {
+            cursor: pointer;
+            margin: 0 3px;
+            background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.31) !important;
+            padding: 6px 12px
+        }
+
+        .paginate_button:hover {
+            background: rgba(255, 255, 255, 0.39) !important;
+            color: #000;
+        }
+
+        #example_paginate {
+            text-align: right;
+            margin-top: 15px
+        }
+
+        .modal-dialog {
+            width: 80% !important
+        }
+
+        .select .form-control {
+            height: 30px
+        }
+
+        #n2 svg text {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .cell text {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        #tableauViz iframe {
+            margin: 0 auto;
+            text-algin: center
+        }
+
+        .tile-title {
+            font-size: 14px
+        }
+
+        .bar {
+            fill: steelblue;
+        }
+
+        .bar:hover {
+            fill: brown;
+        }
+
+        .axis {
+            font: 14px sans-serif;
+            z-index: 9
+        }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #fff;
+            shape-rendering: crispEdges;
+        }
+
+        .x.axis path {
+        }
+
+        #n1, #n2 {
+            padding: 0;
+            margin: 0;
+        }
+
+        #n1 {
+            margin-left: 20px;
+        }
+
+        .bar.total rect {
+            fill: steelblue;
+        }
+
+        .bar.positive rect {
+            fill: #66A900;
+        }
+
+        .bar.negative rect {
+            fill: crimson;
+        }
+
+        .bar:last-child rect {
+            fill: #66A900;
+        }
+
+        .bar line.connector {
+            stroke: grey;
+            stroke-dasharray: 3;
+        }
+
+        .bar text {
+            fill: white;
+            font: 12px sans-serif;
+            text-anchor: middle;
+        }
+
+        .axis text {
+            font: 14px sans-serif;
+        }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #fff;
+            shape-rendering: crispEdges;
+        }
+
+        .xxx {
+            width: 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .clear {
+            clear: both;
+            height: 0;
+            line-height: 0;
+            font-size: 0
+        }
+
+        .zindex {
+            z-index: 10
+        }
+
+        .mtooltip {
+            position: static;
+            text-align: center;
+            width: auto;
+            padding: 8px;
+            margin-top: -20px;
+            font: 14px sans-serif;
+            pointer-events: none;
+            border-radius: 7px;
+            -webkit-border-radius: 7px;
+            -moz-border-radius: 7px;
+            color: #fff;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(255, 255, 255, 0.6);
+            background: rgba(0, 0, 0, 0.75) none repeat scroll 0 0;
+            text-align: left;
+        }
+
+        .mtooltip1 {
+            position: static;
+            text-align: center;
+            width: auto;
+            padding: 8px;
+            margin-top: -20px;
+            font: 14px sans-serif;
+            pointer-events: none;
+            border-radius: 7px;
+            -webkit-border-radius: 7px;
+            -moz-border-radius: 7px;
+            color: #fff;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(255, 255, 255, 0.6);
+            background: rgba(0, 0, 0, 0.75) none repeat scroll 0 0;
+            text-align: left;
+        }
+
+        #tableExample1 {
+            margin-left: 30px
+        }
+
+        #tableExample2 {
+            margin-left: 30px;
+            margin-bottom: 20px
+        }
+
+        .tanchukuang {
+            position: absolute;
+            text-align: center;
+            width: auto;
+            padding: 8px;
+            margin-top: -20px;
+            font: 14px sans-serif;
+            pointer-events: none;
+            border-radius: 7px;
+            -webkit-border-radius: 7px;
+            -moz-border-radius: 7px;
+            color: #fff;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(255, 255, 255, 0.6);
+            background: rgba(0, 0, 0, 0.75) none repeat scroll 0 0;
+            text-align: left;
+        }
+
+        th {
+            text-align: center !important;
+        }
+
+        .hidden {
+            stroke: #ccc !important;
+        }
+
+        .hiddenLineOrDot {
+            stroke: #ccc !important;
+            opacity: 0.05;
+        }
+
+        table.dataTable, .table > tbody > tr > td, .table > thead:first-child > tr:first-child > th {
+            border: solid 1px;
+            text-align: center;
+        }
+
+        table.dataTable, .table > tbody > tr > td, .table > thead:first-child > tr:first-child > th {
+            /*border:solid 1px ;*/
+            text-align: center;
+        }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #fff;
+            shape-rendering: crispEdges;
+        }
+
+        .line {
+            fill: none;
+            stroke-width: 1.5px;
+        }
+
+        .domain {
+            stroke: #fff;
+            fill: #fff;
+        }
+
+        .dot {
+            fill: white;
+            stroke-width: 1.5px;
+        }
+
+        .showLineOrDot {
+            stroke-width: 3;
+        }
+
+        .rectHidden {
+            fill: #ccc !important;
+        }
+
+        .voronoi path {
+            fill: none;
+            pointer-events: all;
+        }
+
+        #tableExample_wrapper {
+            margin-right: -20px !important;
+            margin-left: 15px
+        }
+
+        #tableExample {
+            color: white;
+        }
+
+        .dataTable {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<section id="main" class="p-relative" role="main" style="background: gray">
+    <div class="">
+        <div class="">
+            <div class="" style="marign-bottom:0">
+                <div class="p-10">
+                    <div style="border:1px solid #c9c9c9;float:left;width:100%">
+                        <div id="topLineDiv" style="width:85%; height:904px; float: left;">
+                        </div>
+                        <div id="tableDiv1" style="width:12%; float: left;margin-top:20px;margin-right:3%">
+                            <div id="tableExample_wrapper" class="dataTables_wrapper no-footer">
+                                <div class="dataTables_scroll">
+                                    <div class="dataTables_scrollHead"
+                                         style="overflow: hidden; position: relative; border: 0px; width: 100%;">
+                                        <div class="dataTables_scrollHeadInner"
+                                             style="box-sizing: content-box; width: 169px; padding-right: 17px;">
+                                            <table class="display dataTable no-footer" cellspacing="0"
+                                                   width="100%" role="grid"
+                                                   style="margin-left: 0px; width: 169px;">
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <table id="tableExample" class="display dataTable no-footer"
+                                           cellspacing="0" width="100%" role="grid"
+                                           style="width: 100%;">
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/d3.v3.js"></script>
+<script src="js/jquery.dataTables.js"></script>
+<script>
+
+    $(function () {
+        initAndsearch();
+    });
+    //记录选中参数
+    var selectType, selectYear, selectMonth, selectProvince, selectFarm, selectFanType, selectFanNo;
+
+
+    var arithmeticMap;
+    var map;
+
+
+    var load_end = 1;
+    var defauDateType = "day";
+    var fjbhM;
+    $('#draw').on('click', initAndsearch);
+    function initAndsearch(ev) {
+        //dealDateFunc();
+        //changedatetype();
+        init();
+    }
+
+    function init() {
+        var color = d3.scale.category20c();
+        var format = d3.format(",.2f");
+        var topLineMargin = {top: 70, right: 30, bottom: 50, left: 70},
+                topLineWidth = 800,
+                topLineHeight = 700;
+        var topLineSvg = d3.select("#topLineDiv").append("svg")
+                .attr("width", topLineWidth + topLineMargin.left + topLineMargin.right)
+                .attr("height", topLineHeight + topLineMargin.top + topLineMargin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + topLineMargin.left + "," + topLineMargin.top + ")");
+        var div = d3.select(" body").append("div")
+                .attr("class", "tanchukuang")
+                .style("display", "none");
+        var data824 = null;
+        $.getJSON("./data/line.json", function (data) {
+            data824 = data;
+            drawTu(data, topLineSvg, topLineMargin);
+        });
+        function drawTu(data, topLineSvg, topLineMargin) {
+            var topLineData = data;
+            var fjbhs = d3.nest()
+                    .key(function (d) {
+                        return d.fjbh;
+                    })
+                    .entries(topLineData);
+            var x = d3.scale
+                    .linear()
+                    .domain([d3.min(topLineData, function (d) {
+                        return d.fs;
+                    }), d3.max(topLineData, function (d) {
+                        return d.fs;
+                    })]).nice()
+                    .range([0, topLineWidth]);
+            var y = d3.scale.linear()
+                    .domain([d3.min(topLineData, function (d) {
+                        return d.gl;
+                    }), d3.max(topLineData, function (d) {
+                        return d.gl;
+                    })]).nice()
+                    .range([topLineHeight, 0]);
+            var xAxis = d3.svg.axis()
+                    .scale(x)
+                    .orient("bottom");
+            var yAxis = d3.svg.axis()
+                    .scale(y)
+                    .orient("left");
+            topLineSvg.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0," + topLineHeight + ")")
+                    .call(xAxis)
+                    .style("fill", "#fff")
+                    .append("text")
+                    .style("text-anchor", "end")
+                    .attr("transform", "rotate(0) translate(" + (topLineWidth / 2 + 60) + ",35)")
+                    .text("风速(m/s)")
+                    .style("fill", "#fff");
+            topLineSvg.append("g")
+                    .attr("class", "y axis")
+                    .call(yAxis)
+                    .style("fill", "#fff")
+                    .append("text")
+                    .style("fill", "#fff");
+            topLineSvg.append("g")
+                    .append("text")
+                    .attr("font-size", 20)
+                    .attr("transform", "translate(" + (topLineWidth / 2 - 30) + ",-20)")
+                    .text("折线图与表格联动")
+                    .style("fill", "#fff");
+            topLineSvg.append("g")
+                    .append("text")
+                    .attr("x", 0)
+                    .attr("y", 0)
+                    .attr("font-size", 15)
+                    .attr("transform", "translate(-50," + (topLineHeight / 2) + "),rotate(-90)")
+                    .text("功率 (kW)")
+                    .style("fill", "#fff");
+            //======================折线及散点=====================
+            var aDataSet = [];
+            for (var i = 0; i < fjbhs.length; i++) {
+                var fjInfo = [];
+                fjInfo.push(fjbhs[i].key);
+                fjInfo.push(fjbhs[i].values[0].aep);
+                aDataSet.push(fjInfo);
+                var lineX = [];
+                var lineY = [];
+                var lineData = [];
+                var fstemp = -1;
+                //因数据有重复 故在这里只取前50条，若曲线数据条数有变化请更改
+                for (var j = 0; j < fjbhs[i].values.length; j++) {
+                    if (fjbhs[i].values[j].fs > fstemp) {
+                        lineX.push(fjbhs[i].values[j].fs);
+                        lineY.push(fjbhs[i].values[j].gl);
+                        lineData.push(fjbhs[i].values[j]);
+                        fstemp = fjbhs[i].values[j].fs;
+                    }
+                }
+                var line = d3.svg.line()
+                        .x(function (d, i) {
+                            return x(lineX[i]);
+                        })
+                        .y(function (d, i) {
+                            return y(lineY[i]);
+                        });
+
+                topLineSvg.append("path")
+                        .attr("id", "line" + i)
+                        .datum(lineData)
+                        .attr("class", "line")
+                        .attr("d", line)
+                        .style("stroke", function (d) {
+                            return color(fjbhs[i].key);
+                        });
+                topLineSvg.selectAll(".dot2")
+                        .data(lineData)
+                        .enter().append("circle")
+                        .attr("class", "dot")
+                        .attr("r", 3)
+                        .attr("cx", line.x())
+                        .attr("cy", line.y())
+                        .style("stroke", function (d) {
+                            return color(fjbhs[i].key);
+                        });
+            }
+            $('#tableExample').dataTable({
+                "sAjaxSource": './data/table.json',
+                "fnServerData": function (sSource, aoData, fnCallback) {
+                    aoDataData = [];
+                    $.ajax({
+                        "dataType": "json",
+                        "type": "POST",
+                        "url": sSource,
+                        "data": "",
+                        "success": fnCallback
+                    });
+                },
+                "fnCreatedRow": function (nRow, aData, iDataIndex) {
+                    $(nRow).attr('id', aData.fjbh);
+                },
+                "fnDrawCallback": function (nRow, aData, iDataIndex) {
+                    d3.selectAll('tr').on("mouseenter", function () {
+                        var trID = $(this).attr("id");
+                        d3.selectAll('#' + trID).style("cursor", "pointer");
+                        d3.selectAll('#' + trID).style("text-decoration", "none");
+                    });
+                    d3.selectAll('tr').on("click", function (topLineData) {
+                        isRedraw = true;
+                        var trID = $(this).attr("id");
+                        d3.event.stopPropagation();
+                        d3.selectAll('th').attr("style", "");
+                        d3.selectAll('td').attr("style", "");
+                        d3.selectAll('tr').attr("style", "");
+                        topLineSvg.selectAll('.voronoi').remove();
+                        topLineSvg.selectAll('.focus').remove();
+                        topLineSvg.selectAll('.line')
+                                .sort(function (d) {
+                                    if (d[1].fjbh !== trID) {
+                                        return -1;
+                                    } else {
+                                        return 1;
+                                    }
+                                })
+                                .attr("class", function (d) {
+                                    if (d[1].fjbh !== trID) {
+                                        return "line hiddenLineOrDot";
+                                    } else {
+                                        return "line showLineOrDot";
+                                    }
+                                });
+                        topLineSvg.selectAll('.dot')
+                                .sort(function (d) {
+                                    if (d.fjbh !== trID) {
+                                        return -1;
+                                    } else {
+                                        return 1;
+                                    }
+                                })
+                                .attr("class", function (d) {
+                                    if (d.fjbh !== trID) {
+                                        return "dot hiddenLineOrDot";
+                                    } else {
+                                        return "dot showLineOrDot";
+                                    }
+                                });
+                        d3.selectAll('#' + trID).style("background-color", color(trID));
+                        topVoronoi(2, trID);
+                    });
+                },
+                "bDestroy": true,
+                "bServerSide": true,
+                "sScrollY": 630,
+                "searching": false,
+                "info": false,
+                "aaSorting": [[1, "desc"]], //排序方式，第2列，降序排列
+                "paging": false,
+
+                "columns": [{
+                    "data": "fjbh",
+                    "sTitle": "风机名称",
+                    "render": function (obj) {
+                        return obj;
+                    }
+                }, {
+                    "data": "aep",
+                    "sTitle": "AEP",
+                    "render": function (obj) {
+                        return obj;
+                    }
+
+                }]
+            });
+            topVoronoi(1);
+            //=====================离鼠标最近的点显示=================
+            function topVoronoi(aaaaaa, trID) {
+                var topLineSvg1 = topLineSvg.append("svg")
+                        .attr("width", topLineWidth)
+                        .attr("height", topLineHeight);
+                var voronoi = d3.geom.voronoi()
+                        .x(function (d) {
+                            return x(d.fs);
+                        })
+                        .y(function (d) {
+                            return y(d.gl);
+                        })
+                        .clipExtent([[-topLineMargin.left, -topLineMargin.top], [topLineWidth + topLineMargin.right, topLineHeight + topLineMargin.bottom]]);
+                var focus = topLineSvg1.append("g")
+                        .attr("transform", "translate(-100,-100)")
+                        .attr("class", "focus");
+                focus.append("circle")
+                        .attr("r", 5)
+                        .attr("fill", "#fff")
+                        .attr("stroke-width", 4)
+                        .on("mouseover", mouseover)
+                        .on("mouseout", mouseout);
+                var voronoiGroup = topLineSvg1.append("g")
+                        .attr("class", "voronoi");
+                if (aaaaaa == 1) {
+                    voronoiGroup.selectAll("path")
+                            .data(voronoi(d3.nest()
+                                    .key(function (d, i) {
+                                        return x(d.fs) + "," + y(d.gl);
+                                    })
+                                    .rollup(function (v) {
+                                        return v[0];
+                                    })
+                                    .entries(d3.merge(fjbhs.map(function (d) {
+                                        var voronoiData = [];
+                                        for (var j = 0; j < d.values.length; j++) {
+                                            voronoiData.push(d.values[j]);
+                                        }
+                                        return voronoiData;
+                                    })))
+                                    .map(function (d) {
+                                        return d.values;
+                                    })))
+                            .enter().append("path")
+                            .attr("d", function (d) {
+                                if (d != undefined) return "M" + d.join("L") + "Z";
+                            })
+                            .datum(function (d) {
+                                if (d != undefined) return d.point;
+                            })
+                            .on("mouseover", mouseover)
+                            .on("mouseout", mouseout);
+                } else if (aaaaaa == 2) {
+                    voronoiGroup.selectAll("path")
+                            .data(voronoi(d3.nest()
+                                    .key(function (d, i) {
+                                        return x(d.fs) + "," + y(d.gl);
+                                    })
+                                    .rollup(function (v) {
+                                        return v[0];
+                                    })
+                                    .entries(d3.merge(fjbhs.map(function (d) {
+                                        var voronoiData = [];
+                                        for (var j = 0; j < d.values.length; j++) {
+                                            if (d.values[j].fjbh == trID) {
+                                                voronoiData.push(d.values[j]);
+                                            }
+                                        }
+                                        return voronoiData;
+                                    })))
+                                    .map(function (d) {
+                                        return d.values;
+                                    })))
+                            .enter().append("path")
+                            .attr("d", function (d) {
+                                if (d != undefined)  return "M" + d.join("L") + "Z";
+                            })
+                            .datum(function (d) {
+                                if (d != undefined) return d.point;
+                            })
+                            .on("mouseover", mouseover)
+                            .on("mouseout", mouseout1);
+                }
+                function mouseover(topLineData) {
+                    div.style("display", "inline");
+                    div.html("风机名称：" + topLineData.fjbh + "<br />" + "风速：　　" + topLineData.fs + "　m/s" + "<br />" + "功率：　　" + topLineData.gl + "　kW")
+                            .style("left", (x(topLineData.fs)) + "px")
+                            .style("background-color", "#000");
+                    focus.attr("transform", "translate(" + x(topLineData.fs) + "," + y(topLineData.gl) + ")");
+                    focus.attr("stroke", function (d) {
+                        return color(topLineData.fjbh);
+                    });
+                    d3.selectAll('#' + topLineData.fjbh).style("background-color", color(topLineData.fjbh));
+                    topLineSvg.selectAll('.line')
+                            .sort(function (d) {
+                                if (d[1].fjbh !== topLineData.fjbh) {
+                                    return -1;
+                                } else {
+                                    return 1;
+                                }
+                            })
+                            .attr("class", function (d) {
+                                if (d[1].fjbh !== topLineData.fjbh) {
+                                    return "line hiddenLineOrDot";
+                                } else {
+                                    return "line showLineOrDot";
+                                }
+                            });
+                    topLineSvg.selectAll('.dot')
+                            .sort(function (d) {
+                                if (d.fjbh !== topLineData.fjbh) {
+                                    return -1;
+                                } else {
+                                    return 1;
+                                }
+                            })
+                            .attr("class", function (d) {
+                                if (d.fjbh !== topLineData.fjbh) {
+                                    return "dot hiddenLineOrDot";
+                                } else {
+                                    return "dot showLineOrDot";
+                                }
+                            });
+                }
+
+                function mouseout(topLineData) {
+                    focus.attr("transform", "translate(-100,-100)");
+                    div.style("display", "none");
+                    topLineSvg.selectAll('.line').classed("hiddenLineOrDot showLineOrDot", false);
+                    topLineSvg.selectAll('.dot').classed("hiddenLineOrDot showLineOrDot", false);
+                    d3.selectAll('tr').attr("style", "");
+                }
+
+                function mouseout1(topLineData) {
+                    focus.attr("transform", "translate(-100,-100)");
+                    div.style("display", "none");
+                }
+            }
+        }
+
+        $(document).on('click', function (ev) {
+            if (isRedraw) {
+                $('#tableExample tr').css('background-color', 'transparent');
+                $('#topLineDiv svg g').empty();
+                drawTu(data824, d3.select('#topLineDiv svg g'), topLineMargin);
+                isRedraw = false;
+            }
+        });
+    }
+</script>
+</body>
+</html>

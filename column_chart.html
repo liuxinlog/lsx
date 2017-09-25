@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        html,body{
+            height: 500px;
+            background: #eeeeee;
+        }
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: white;
+            shape-rendering: crispEdges;//这个属性用来显示轴
+
+        }
+
+        .axis text {
+            font-family: sans-serif;
+            font-size: 11px;
+        }
+    </style>
+
+</head>
+<body>
+<div id="n1" style="background: dodgerblue;margin-top: 100px;"></div>
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/d3.v3.js"></script>
+<script>
+    var div = d3.select("body").append("div").attr("class", "mtooltip1")
+            .style("display", "none");
+    function betaRank(dataset) {
+        d3.select("#n1 svg").remove();
+        var width = 800; //SVG绘制区域的宽度
+        var height = 440; //SVG绘制区域的高度
+        var svg = d3.select("#n1") //选择<body>
+                .append("svg") //在<body>中添加<svg>
+                .attr("width", width) //设定<svg>的宽度属性
+                .attr("height", height);//设定<svg>的高度属性
+
+        //1. 确定初始数据
+        dataset = dataset.map(function(d) {
+            return {
+                province : d.province,
+                BETA2 : d.beta2==null?0:d.beta2,
+                BETA1 : d.beta1==null?0:d.beta1
+            };
+        });
+
+        //外边框
+        var padding = {
+            left : 60,
+            right : 0,
+            top : 30,
+            bottom : 50
+        };
+
+        //创建x轴比例尺
+        var xRangeWidth = width - padding.left - padding.right - 10;
+
+        var xScale = d3.scale.ordinal().domain(dataset.map(function(d) {
+            return d.province;
+        })).rangeBands([ 0, xRangeWidth ], 0.3);
+
+        //创建y轴比例尺
+
+        //最大利润（定义域的最大值）
+        //最大高度（值域的最大值）
+        var yRangeWidth = height - padding.top - padding.bottom;
+        //取出beta1和beta2中的最大最小值
+        var beta1Max= d3.max(dataset, function(d){return d.BETA1;});
+        var beta2Max= d3.max(dataset, function(d){return d.BETA2;});
+        //求出最大最小值
+        var beta1Min= d3.min(dataset, function(d){return d.BETA1;});
+        var beta2Min= d3.min(dataset, function(d){return d.BETA2;});
+        var yMin=0;
+        if(beta1Min<0)
+            yMin = yMin+beta1Min;
+        if(beta2Min<0)
+            yMin = yMin+beta2Min;
+        var yScale = d3.scale.linear().domain([ yMin, parseFloat(beta1Max+beta2Max) ]).nice() //定义域
+                .range([ 0, yRangeWidth ]); //值域
+
+        //颜色比例尺
+        var color = d3.scale.category10();
+
+        //添加分组元素
+        var groups = svg.selectAll("g").data(dataset).enter().append("g")
+                .style("fill", function(d, i) {
+                    return color(i);
+                });
+
+        //添加坐标轴
+        var xAxis = d3.svg.axis().scale(xScale).orient("bottom");
+
+        yScale.range([ yRangeWidth, 0 ]);
+
+        var yAxis = d3.svg.axis().scale(yScale).orient("left");
+
+        svg.append("g").attr("class", "axis")
+                .attr("transform","translate(" + padding.left + "," + (height - padding.bottom+1)+ ")")
+                .call(xAxis)
+                .style("fill", "#fff")
+                .selectAll("text")
+                .style("text-anchor", "start").
+                attr("transform","rotate(40)");
+
+        svg.append("g").attr("class", "axis")
+                .attr("transform","translate(" + padding.left + ","
+                + (height - padding.bottom - yRangeWidth) + ")")
+                .call(yAxis)
+                .style("fill", "#fff").append("text").attr("dy", ".71em")
+                .style("text-anchor", "end")
+                .attr("transform","rotate(-90) translate(-30,-58)")
+            /*.text("β值考核值(%)")*/
+                .style("fill", "#fff");
+
+        //添加分组标签
+
+        var g_rect = svg.append("g");
+        g_rect.selectAll("rect.layer1").data(dataset).enter().append("rect")
+                .attr("class", "layer1")
+                .attr("x", function(d) {return xScale(d.province);})
+                .attr("y", function(d) {
+                    if (d.BETA2==null||d.BETA2 < 0) {
+                        return yScale(0);
+                    }else {
+                        return yScale(d.BETA2);
+                    }
+                })
+                .attr("width", xScale.rangeBand())
+                .attr("fill","rgb(23, 190, 207)")
+                .attr("height",function(d) {return Math.abs(yScale(d.BETA2) - yScale(0));})
+                .attr("transform","translate(" + padding.left + "," + padding.top + ")")
+                .on("mouseover", mouseover)
+                .on("mousemove", mousemove2)
+                .on("mouseout", mouseout);
+        g_rect.selectAll("rect.layer2").data(dataset)
+                .enter()
+                .append("rect")
+                .attr("class", "layer2")
+                .attr("x", function(d) {return xScale(d.province);})
+                .attr("y",function(d) {
+                    if (d.BETA2 * d.BETA1 > 0) {
+                        if (d.BETA2 < 0) {
+                            return yScale(0)
+                                    + Math.abs(yScale(d.BETA2)
+                                            - yScale(0));
+                        } else {
+                            return yScale(0)
+                                    - Math.abs(yScale(d.BETA2)
+                                            - yScale(0))
+                                    - Math.abs(yScale(d.BETA1)
+                                            - yScale(0));
+                        }
+                    } else {
+                        if (d.BETA1 < 0) {
+                            return yScale(0);
+                        } else {
+                            return yScale(d.BETA1);
+                        }
+                    }
+                }).attr("width", xScale.rangeBand())
+                .attr("fill","orange")
+                .attr("height",function(d) {
+                    return Math.abs(yScale(d.BETA1) - yScale(0));
+                })
+                .attr("transform", "translate(" + padding.left + "," + padding.top + ")")
+                .on("mouseover", mouseover)
+                .on("mousemove", mousemove1)
+                .on("mouseout", mouseout);
+
+        d3.selectAll("#n1").on("click", function(d) {
+            d3.selectAll("rect").style("opacity", 1);
+            //损失电量分解图（瀑布图）
+
+        });
+        d3.selectAll("#n1 rect").on("click", function(d) {
+            d3.event.stopPropagation();
+            d3.selectAll("rect").style("opacity", 0.1);
+            var thisLetter = d.province;
+            $("#n4Title").html(thisLetter+"β值总顾百分比");
+            d3.selectAll("rect").filter(function(d) {
+                return thisLetter == d.province;
+            }).style("opacity", 1);
+            //损失电量分解图（瀑布图）
+        });
+        var div = d3.select("body").append("div").attr("class", "mtooltip").style("display", "none");
+
+        function mouseover() {
+            div.style("display", "inline");
+        }
+        function mouseover() {
+            div.style("display", "inline");
+        }
+
+        function mousemove2(d) {
+            div.html("项目公司：" + d.province + "<br />" + "▲2：" + d.BETA2.toFixed(2))
+                    .style("left", function(d) {
+                        if (($(window).width() - d3.event.pageX) > 0) {
+                            return (d3.event.pageX + 10) + "px";
+                        } else {
+                            return (d3.event.pageX - 180) + "px";
+                        }
+                    }).style("top", (d3.event.pageY + 35) + "px");
+        }
+        function mousemove1(d) {
+            div.html("项目公司：" + d.province + "<br />" + "▲1：" + d.BETA1.toFixed(2))
+                    .style("left", function(d) {
+                        if (($(window).width() - d3.event.pageX) > 0) {
+                            return (d3.event.pageX + 10) + "px";
+                        } else {
+                            return (d3.event.pageX - 180) + "px";
+                        }
+                    }).style("top", (d3.event.pageY + 35) + "px");
+        }
+
+        function mouseout() {
+            div.style("display", "none");
+        }
+        groups.append("rect").attr("x", function(d) {return width - padding.right - 70;})
+                .attr("y", function(d) {return 0;})
+                .attr("width", 18) // 在图例的g标签中添加带有颜色的正方形
+                .attr("height", 18).style("fill", "#17becf");
+
+        groups.append("text").attr("x", function(d) {return width - padding.right - 20;})
+                .attr("y", function(d) {return 10;})
+                .attr("class", "xh")// 在图例的g标签中添加图例名称
+                .attr("dy", ".35em")
+                .style({"text-anchor" : "end","fill" : "#17becf"})
+                .text(function(d) {return "▲1值";});
+        groups.append("rect").attr("x", function(d) {return width - padding.right - 70;})
+                .attr("y", function(d) {return 25;})
+                .attr("width", 18) // 在图例的g标签中添加带有颜色的正方形
+                .attr("height", 18).style("fill", "#ff7f0e");
+
+        groups.append("text").attr("x", function(d) {return width - padding.right - 20;})
+                .attr("y", function(d) {return 35;})
+                .attr("class", "xh")// 在图例的g标签中添加图例名称
+                .attr("dy", ".35em").
+                style({	"text-anchor" : "end","fill" : "#ff7f0e"})
+                .text(function(d) {	return "▲2值";});
+
+            d3.selectAll("#n1 rect").style("opacity", 0.5);
+            var thisLetter ='{{$defaultProvince}}';
+            d3.selectAll("#n1 rect").filter(function(d) {
+                return thisLetter == d.province;
+            }).style("opacity", 1);
+
+
+        load = load + 1;
+    }
+    $.getJSON("data/beta.json", function (data){
+        console.log(data.beta);
+        betaRank(data.beta);
+    })
+</script>
+</body>
+</html>
